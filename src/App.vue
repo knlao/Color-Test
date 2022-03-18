@@ -1,6 +1,16 @@
 <template>
   <h1>Color Test</h1>
   <h2>Which one is different?</h2>
+  <div class="row-selection">
+    <span>Rows: </span>
+    <input
+      type="number"
+      min="2"
+      max="12"
+      v-model="boardWidth"
+      @change="newColor"
+    />
+  </div>
   <div class="board">
     <div class="row" v-for="n in boardWidth" :key="n">
       <span v-for="m in boardWidth" :key="m">
@@ -52,6 +62,8 @@ const newColor = () => {
     Math.random() * (boardWidth.value * boardWidth.value) + 1
   );
 };
+
+newColor();
 </script>
 
 <style>
