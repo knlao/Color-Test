@@ -1,30 +1,47 @@
 <template>
   <h1>Color Test</h1>
   <h2>Which one is different?</h2>
+
   <div class="row-selection">
-    <span>Rows: </span>
+    <span class="row-text">Rows: </span>
     <input
       type="number"
       min="2"
       max="12"
-      v-model="boardWidth"
+      v-model.number="boardWidth"
       @change="newColor"
+      class="row-selector"
     />
   </div>
+
+  <div class="message">
+    <span :class="{ correct: isCorrect, wrong: !isCorrect }">{{ msg }}</span>
+  </div>
+
   <div class="board">
     <div class="row" v-for="n in boardWidth" :key="n">
       <span v-for="m in boardWidth" :key="m">
         <span v-if="(n - 1) * boardWidth + m === randomIdx"
-          ><Block :color="diffColor" isDiff="true" @correct="newColor"></Block
+          ><Block
+            :color="diffColor"
+            isDiff="true"
+            @correct="handleCorrect"
+          ></Block
         ></span>
-        <span v-else><Block :color="currentColor" isDiff="false"></Block></span>
+        <span v-else
+          ><Block
+            :color="currentColor"
+            isDiff="false"
+            @wrong="handleWrong"
+          ></Block
+        ></span>
       </span>
     </div>
   </div>
-  <button @click="newColor">generate new color</button>
+  <button class="new-btn" @click="newColor">generate new color</button>
 
   <br />
-  <h3 @click="isDebugging = !isDebugging">Debug use</h3>
+  <span class="debug-btn" @click="isDebugging = !isDebugging">Debug use</span>
   <div v-if="isDebugging">
     <p>Item: {{ randomIdx }}</p>
     <p>Current Color: {{ currentColor }}</p>
@@ -44,6 +61,8 @@ const randomIdx = ref(
   Math.floor(Math.random() * (boardWidth.value * boardWidth.value) + 1)
 );
 const isDebugging = ref(false);
+const isCorrect = ref(true);
+const msg = ref("");
 
 const newColor = () => {
   let g =
@@ -63,6 +82,17 @@ const newColor = () => {
   );
 };
 
+const handleCorrect = () => {
+  msg.value = "Correct!";
+  isCorrect.value = true;
+  newColor();
+};
+
+const handleWrong = () => {
+  msg.value = "Wrong!";
+  isCorrect.value = false;
+};
+
 newColor();
 </script>
 
@@ -75,8 +105,58 @@ newColor();
   color: #2c3e50;
   margin-top: 60px;
 }
+
+h2 {
+  margin: 0;
+}
+
 .row {
   display: flex;
   justify-content: center;
+}
+
+.row-text {
+  font-size: 20px;
+  margin: 0 10px;
+}
+
+.row-selection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row-selector {
+  padding: 6px 10px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid #232323;
+}
+
+.message {
+  margin: 10px;
+  font-size: 26px;
+  height: 40px;
+}
+
+.correct {
+  color: #66ff66;
+}
+.wrong {
+  color: #ff3300;
+}
+
+.new-btn {
+  border: none;
+  background-color: lightgreen;
+  height: 40px;
+  width: 180px;
+  border-radius: 20px;
+  margin: 10px;
+}
+
+.debug-btn {
+  cursor: pointer;
 }
 </style>

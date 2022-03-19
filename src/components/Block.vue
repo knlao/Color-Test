@@ -8,12 +8,13 @@
 
 <script setup>
 const { color, isDiff } = defineProps(["color", "isDiff"]);
-const emit = defineEmits(["correct"]);
+const emit = defineEmits(["correct", "wrong"]);
 
 const handleClick = () => {
   if (isDiff === "true") {
-    alert("You are correct");
     emit("correct");
+  } else {
+    emit("wrong");
   }
 };
 </script>
