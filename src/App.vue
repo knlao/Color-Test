@@ -13,6 +13,17 @@
       class="row-selector"
     />
   </div>
+  <div class="row-selection">
+    <span class="row-text">Diff Rate: </span>
+    <input
+      type="number"
+      min="0"
+      max="255"
+      v-model.number="diffRate"
+      @change="newColor"
+      class="row-selector"
+    />
+  </div>
 
   <div class="message">
     <span :class="{ correct: isCorrect, wrong: !isCorrect }">{{ msg }}</span>
@@ -56,7 +67,7 @@ import Block from "./components/Block.vue";
 const boardWidth = ref(4);
 const currentColor = ref("#EEEEEE");
 const diffColor = ref("#EDEDED");
-const diffRate = ref(25);
+const diffRate = ref(10);
 const randomIdx = ref(
   Math.floor(Math.random() * (boardWidth.value * boardWidth.value) + 1)
 );
